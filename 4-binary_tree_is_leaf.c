@@ -6,4 +6,7 @@
  *
  * Return: 1 or 0.
  */
-int binary_tree_is_leaf(const binary_tree_t *node) {}
+int binary_tree_is_leaf(const binary_tree_t *node)
+{
+	return (node && node->left == NULL && node->right == NULL);
+}
