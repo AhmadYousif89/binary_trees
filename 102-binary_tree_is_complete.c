@@ -16,21 +16,30 @@ int get_size(const binary_tree_t *tree)
 
 /**
  * check_complete - Check if a binary tree is complete.
- * @root: Pointer to the root node of the tree to check
- * @index: starting node index
- * @number_nodes: total number of the tree nodes
+ *
+ * @tree: Pointer to the root node of the tree to check
+ * @index: the node index position
+ * @total_nodes: total number of the tree nodes
+ *
  * Return: 1 if the tree is complete, 0 otherwise
+ *
+ * Description:
+ * This function recursively checks if the binary tree starting
+ * from the given root node is complete.
+ * It traverses the tree in a depth-first manner, assigning an index to each
+ * node based on its position, and compares the index of each node with
+ * the total number of nodes to determine completeness.
  */
-int check_complete(const binary_tree_t *root, int index, int number_nodes)
+int check_complete(const binary_tree_t *tree, int index, int total_nodes)
 {
-	if (root == NULL)
+	if (tree == NULL)
 		return (1);
 
-	if (index >= number_nodes)
+	if (index >= total_nodes)
 		return (0);
 
-	return (check_complete(root->left, 2 * index + 1, number_nodes) &&
-			check_complete(root->right, 2 * index + 2, number_nodes));
+	return (check_complete(tree->left, 2 * index + 1, total_nodes) &&
+			check_complete(tree->right, 2 * index + 2, total_nodes));
 }
 
 /**
