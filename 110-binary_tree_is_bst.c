@@ -11,7 +11,7 @@
  * Description:
  * This function recursively checks if the tree satisfies the properties of a
  * Binary Search Tree (BST). It ensures that for each node, its value falls
- * within the specified range (min, max), and checks the left and right subtrees
+ * within the specified range (min, max) and checks the left and right subtrees
  * to verify the BST property.
  *
  * Return: 1 if the tree is a valid BST 0 otherwise.
