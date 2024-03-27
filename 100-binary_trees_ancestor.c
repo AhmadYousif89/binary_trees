@@ -22,7 +22,7 @@ binary_tree_t *binary_trees_ancestor(const binary_tree_t *first,
 		while (temp)
 		{
 			if (first == temp) /* Found common ansector */
-				return (binary_tree_t *)first;
+				return ((binary_tree_t *)first);
 			temp = temp->parent; /* Traversing up the 2nd subtree lineage */
 		}
 		first = first->parent; /* Traversing up the 1st subtree lineage */
