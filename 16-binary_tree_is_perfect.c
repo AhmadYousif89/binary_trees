@@ -23,7 +23,7 @@ int get_depth(const binary_tree_t *node)
  *
  * Return: the tree's size or 0 if tree is NULL.
  */
-size_t get_size(const binary_tree_t *tree)
+int get_size(const binary_tree_t *tree)
 {
 	if (tree == NULL)
 		return (0);
@@ -48,5 +48,5 @@ int binary_tree_is_perfect(const binary_tree_t *tree)
 	if (tree == NULL)
 		return (0);
 
-	return ((int)get_size(tree) == (1 << get_depth(tree)) - 1);
+	return (get_size(tree) == (1 << get_depth(tree)) - 1);
 }
