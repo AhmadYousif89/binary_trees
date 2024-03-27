@@ -1,22 +1,21 @@
 #include "binary_trees.h"
 
 /**
- * get_height- measures the height of a binary tree.
+ * binary_tree_depth - measures the depth of a node in a binary tree.
  * @tree: pointer to the root node of the tree.
  *
- * Return: the height of the tree, or 0 if tree is NULL.
+ * Return: the tree's depth or 0 if tree is NULL.
  */
-size_t get_height(const binary_tree_t *tree)
+int get_depth(const binary_tree_t *node)
 {
-	size_t left, right;
+	int d = 0;
 
-	if (tree == NULL)
-		return (0);
-
-	left = get_height(tree->left);
-	right = get_height(tree->right);
-
-	return (1 + (left > right ? left : right));
+	while (node)
+	{
+		d++;
+		node = node->left;
+	}
+	return (d);
 }
 
 /**
@@ -38,12 +37,17 @@ size_t get_size(const binary_tree_t *tree)
  * @tree: pointer to the root node of the tree.
  *
  * Return: 1 if the tree is perfect, 0 otherwise.
+ *
+ * Theorems:
+ * A perfect binary tree of height h has 2h + 1 – 1 node.
+ * A perfect binary tree with n nodes has height log(n + 1) – 1 = Θ(ln(n)).
+ * A perfect binary tree of height h has 2h leaf nodes.
+ * The average depth of a node in a perfect binary tree is Θ(ln(n)).
  */
 int binary_tree_is_perfect(const binary_tree_t *tree)
 {
-	size_t height = get_height(tree);
-	size_t size = get_size(tree);
+	if (tree == NULL)
+		return (0);
 
-	/* A perfect binary tree has 2^h - 1 nodes, where h is the height */
-	return ((int)size == (1 << height) - 1);
+	return ((int)get_size(tree) == (1 << get_depth(tree)) - 1);
 }
