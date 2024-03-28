@@ -28,17 +28,14 @@ avl_t *build_avl_tree(avl_t *parent, int *array, int start, int end)
 	avl_t *root;
 	int mid = 0;
 
-	if (start <= end)
+	if (start > end)
 		return (NULL);
-	{
-		mid = (start + end) / 2;
-		root = binary_tree_node(parent, array[mid]);
-		if (root)
-			root->parent = parent;
-		else
-			return (NULL);
-		root->left = build_avl_tree(root, array, start, mid - 1);
-		root->right = build_avl_tree(root, array, mid + 1, end);
-		return (root);
-	}
+
+	mid = (start + end) / 2;
+	root = binary_tree_node(parent, array[mid]);
+	root->parent = parent;
+
+	root->left = build_avl_tree(root, array, start, mid - 1);
+	root->right = build_avl_tree(root, array, mid + 1, end);
+	return (root);
 }
