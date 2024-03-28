@@ -1,4 +1,3 @@
-#include <limits.h>
 #include "binary_trees.h"
 
 /**
