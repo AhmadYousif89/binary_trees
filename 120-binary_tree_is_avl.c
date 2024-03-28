@@ -38,8 +38,7 @@ int is_AVL(const binary_tree_t *tree)
 	if (balance_factor < -1 || balance_factor > 1)
 		return (0);
 
-	return (is_AVL(tree->left) &&
-			is_AVL(tree->right));
+	return (is_AVL(tree->left) && is_AVL(tree->right));
 }
 
 /**
