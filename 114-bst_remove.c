@@ -24,11 +24,10 @@ bst_t *bst_remove(bst_t *root, int value)
 		if (root->left == NULL || root->right == NULL)
 		{
 			temp = root->left ? root->left : root->right;
-			if (temp == NULL)
-			{
-				free(root);
-				return (temp);
-			}
+			if (temp)
+				temp->parent = root->parent;
+			free(root);
+			return (temp);
 		}
 		else /* Case 2: Two childern */
 		{
