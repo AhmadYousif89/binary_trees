@@ -36,7 +36,11 @@ avl_t *build_avl_tree(int *array, int start, int end)
 		return (NULL);
 
 	root->left = build_avl_tree(array, start, mid - 1);
+	if (root->left)
+		root->left->parent = root;
 	root->right = build_avl_tree(array, mid + 1, end);
+	if (root->right)
+		root->right->parent = root;
 
 	return (root);
 }
