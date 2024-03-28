@@ -29,14 +29,12 @@ bst_t *bst_remove(bst_t *root, int value)
 			free(root);
 			return (temp);
 		}
-		else /* Case 2: Two childern */
-		{
-			temp = root->right;
-			while (temp->left)
-				temp = temp->left;
-			root->n = temp->n;
-			root->right = bst_remove(root->right, temp->n);
-		}
+		/* Case 2: Two childern */
+		temp = root->right;
+		while (temp->left)
+			temp = temp->left;
+		root->n = temp->n;
+		root->right = bst_remove(root->right, temp->n);
 	}
 
 	return (root);
