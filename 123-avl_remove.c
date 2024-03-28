@@ -1,4 +1,5 @@
 #include "binary_trees.h"
+avl_t *balance_avl(avl_t *root);
 
 /**
  * avl_remove - Removes a node from a AVL Tree
@@ -9,15 +10,18 @@
  */
 avl_t *avl_remove(avl_t *root, int value)
 {
-	int bf = binary_tree_balance(root);
 	avl_t *temp;
 
+	if (root == NULL)
+		return (NULL);
+	/* Remove node logic */
 	if (value < root->n)
 		root->left = avl_remove(root->left, value);
 	else if (value > root->n)
 		root->right = avl_remove(root->right, value);
 	else /* value == root->n */
-	{	 /* Case 1: No child or one child */
+	{
+		/* Case 1: No child or one child */
 		if (root->left == NULL || root->right == NULL)
 		{
 			temp = root->left ? root->left : root->right;
@@ -26,14 +30,30 @@ avl_t *avl_remove(avl_t *root, int value)
 			free(root);
 			return (temp);
 		}
-		temp = root->right; /* Case 2: Two childern */
+		/* Case 2: Two childern */
+		temp = root->right;
 		while (temp->left)
 			temp = temp->left;
 		root->n = temp->n;
 		root->right = avl_remove(root->right, temp->n);
 	}
-	if (root == NULL)
-		return (root);
+
+	/* Balance the AVL tree if needed */
+	root = balance_avl(root);
+
+	return (root);
+}
+
+/**
+ * balance_avl - Balance the AVL tree.
+ * @root: Pointer to the root node of the tree
+ * Return: Pointer to the root node.
+ */
+avl_t *balance_avl(avl_t *root)
+{
+	int bf;
+
+	bf = binary_tree_balance(root);
 	if (bf > 1 && binary_tree_balance(root->left) >= 0)
 		return (binary_tree_rotate_right(root));
 	if (bf < -1 && binary_tree_balance(root->right) > 0)
@@ -48,5 +68,6 @@ avl_t *avl_remove(avl_t *root, int value)
 	}
 	if (bf < -1 && binary_tree_balance(root->right) <= 0)
 		return (binary_tree_rotate_left(root));
+
 	return (root);
 }
