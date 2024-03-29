@@ -1,16 +1,43 @@
 #include "binary_trees.h"
 
 /**
- * _size - measures the size of a binary tree.
- * @tree: pointer to the root node of the tree.
- * Return: the tree's size or 0 if tree is NULL.
+ * _height - Measures the height of a binary tree.
+ * @tree: Pointer to the root node.
+ * Return: Height or 0 if tree is NULL.
  */
-size_t _size(const heap_t *tree)
+size_t _height(const binary_tree_t *tree)
 {
+	size_t left, right;
+
 	if (tree == NULL)
 		return (0);
 
-	return (_size(tree->left) + _size(tree->right) + 1);
+	left = _height(tree->left);
+	right = _height(tree->right);
+
+	return ((left > right ? left : right) + 1);
+}
+
+/**
+ * pre_order - Goes through a binary tree using pre-order traversal.
+ * @tree: Pointer to the root node of the tree to traverse.
+ * @node: Will be last node in traverse.
+ * @height: Height of tree.
+ *
+ * Return: No Return.
+ */
+void pre_order(heap_t *tree, heap_t **node, size_t height)
+{
+	if (tree == NULL)
+		return;
+
+	if (height == 0)
+		*node = tree;
+
+	height--;
+
+	pre_order(tree->left, node, height);
+	pre_order(tree->right, node, height);
 }
 
 /**
@@ -27,8 +54,8 @@ void swap(heap_t *node1, heap_t *node2)
 }
 
 /**
- * heapify_down - Restores the Max Heap property by moving a node down the heap
- * @root: Pointer to the root node of the heap
+ * heapify_down - Heapifies max binary heap.
+ * @root: Pointer to binary heap.
  */
 void heapify_down(heap_t *root)
 {
@@ -53,47 +80,37 @@ void heapify_down(heap_t *root)
 }
 
 /**
- * heap_extract - Extracts the root node of a Max Binary Heap
- * @root: Double pointer to the root node of the heap
- * Return: The value stored in the root node, or 0 on failure
+ * heap_extract - Extracts the root node of a Max Binary Heap.
+ * @root: A double pointer to the root node of heap.
+ * Return: The value stored in the root node, 0 on failure.
  */
 int heap_extract(heap_t **root)
 {
-	int extracted_value;
-	heap_t *last_node;
+	heap_t *node = NULL;
+	int value;
 
 	if (root == NULL || *root == NULL)
 		return (0);
 
-	extracted_value = (*root)->n;
-	if (_size(*root) == 1)
+	value = (*root)->n;
+	if ((*root)->left == NULL && (*root)->right == NULL)
 	{
-		free(*root);
 		*root = NULL;
-		return (extracted_value);
+		free(*root);
+		return (value);
 	}
 
-	/* Find the last level-order node */
-	last_node = *root;
-	while (last_node->left || last_node->right)
-	{
-		if (last_node->right)
-			last_node = last_node->right;
-		else
-			last_node = last_node->left;
-	}
+	pre_order(*root, &node, _height(*root) - 1);
 
-	/* Swap values of root and last node */
-	swap(*root, last_node);
-
-	/* Free last node */
-	if (last_node->parent->left == last_node)
-		last_node->parent->left = NULL;
+	(*root)->n = node->n;
+	if (node->parent->right)
+		node->parent->right = NULL;
 	else
-		last_node->parent->right = NULL;
-	free(last_node);
+		node->parent->left = NULL;
+
+	free(node);
 
 	heapify_down(*root);
 
-	return (extracted_value);
+	return (value);
 }
