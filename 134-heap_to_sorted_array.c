@@ -7,16 +7,10 @@
  */
 size_t _size(const binary_tree_t *tree)
 {
-	size_t lh = 0;
-	size_t rh = 0;
-
 	if (tree == NULL)
 		return (0);
 
-	lh = tree->left ? 1 + _size(tree->left) : 0;
-	rh = tree->right ? 1 + _size(tree->right) : 0;
-
-	return (lh + rh);
+	return (1 + (_size(tree->left) + _size(tree->right)));
 }
 
 /**
@@ -34,9 +28,9 @@ int *heap_to_sorted_array(heap_t *heap, size_t *size)
 	if (heap == NULL || size == 0)
 		return (NULL);
 
-	*size = _size(heap) + 1;
+	*size = _size(heap);
 
-	array = malloc(sizeof(int) * *size);
+	array = malloc(sizeof(int) * (*size));
 	if (array == NULL)
 		return (NULL);
 
