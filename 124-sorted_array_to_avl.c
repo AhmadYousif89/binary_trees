@@ -32,6 +32,8 @@ avl_t *build_avl_tree(int *array, int start, int end)
 
 	mid = (start + end) / 2;
 	root = binary_tree_node(NULL, array[mid]);
+	if (root == NULL)
+		return (NULL);
 
 	root->left = build_avl_tree(array, start, mid - 1);
 	if (root->left)
