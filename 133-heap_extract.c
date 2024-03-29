@@ -47,10 +47,9 @@ void pre_order(heap_t *tree, heap_t **node, size_t height)
  */
 void swap(heap_t *node1, heap_t *node2)
 {
-	int temp = node1->n;
-
-	node1->n = node2->n;
-	node2->n = temp;
+	node1->n ^= node2->n;
+	node2->n ^= node1->n;
+	node1->n ^= node2->n;
 }
 
 /**
@@ -86,31 +85,30 @@ void heapify_down(heap_t *root)
  */
 int heap_extract(heap_t **root)
 {
-	heap_t *node = NULL;
+	heap_t *tree, *node = NULL;
 	int value;
 
 	if (root == NULL || *root == NULL)
 		return (0);
 
-	value = (*root)->n;
-	if ((*root)->left == NULL && (*root)->right == NULL)
+	tree = *root;
+	value = (tree)->n;
+	if ((tree)->left == NULL && (tree)->right == NULL)
 	{
 		*root = NULL;
-		free(*root);
+		free(tree);
 		return (value);
 	}
 
-	pre_order(*root, &node, _height(*root) - 1);
+	pre_order(*root, &node, _height(tree) - 1);
 
-	(*root)->n = node->n;
+	(tree)->n = node->n;
 	if (node->parent->right)
 		node->parent->right = NULL;
 	else
 		node->parent->left = NULL;
 
 	free(node);
-
-	heapify_down(*root);
-
+	heapify_down(tree);
 	return (value);
 }
